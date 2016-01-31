@@ -1,0 +1,16 @@
+<launch>
+  <!-- Read arguments -->
+  <arg name="serial" default=""/>
+  <arg name="frame" default="leddar"/>
+  <arg name="max_range" default="50.0"/>
+  <arg name="field_of_view" default="45.0"/>
+
+  <node name="leddar" pkg="leddar" type="leddar"
+    output="screen" respawn="true">
+      <!-- Set ROS parameters -->
+      <param name="frame" value="$(arg frame)"/>
+      <param name="serial" value="$(arg serial)"/>
+      <param name="max_range" value="$(arg max_range)"/>
+      <param name="field_of_view" value="$(arg field_of_view)"/>
+  </node>
+</launch>
