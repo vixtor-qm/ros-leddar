@@ -7,16 +7,24 @@ Sensor Evaluation Kit.**
 
 Setting up
 ----------
-
 You must clone this repository as `leddar` into your catkin workspace:
 
 ```bash
 git clone https://github.com/mcgill-robotics/ros-leddar.git leddar
 ```
 
+Udev rules
+----------
+To set up udev rules for your device, simply run:
+
+```bash
+sudo useradd -G plugdev $USER
+sudo cp 10-leddartech-rules /etc/udev/rules.d/
+sudo udevadm trigger
+```
+
 Compiling
 ---------
-
 You **must** compile this package before being able to run it. You can do so
 by running:
 
