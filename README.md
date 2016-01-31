@@ -22,9 +22,12 @@ To set up udev rules for your device, simply run:
 
 ```bash
 sudo useradd -G plugdev ${USER}
-sudo cp 10-leddartech-rules /etc/udev/rules.d/
+sudo cp 10-leddartech.rules /etc/udev/rules.d/
 sudo udevadm trigger
 ```
+
+You might have to restart for this to take effect.
+*Note that these rules might only work for the Sensor Evaluation Kit.*
 
 Compiling
 ---------
@@ -53,7 +56,7 @@ connected.
 - `fov`: Field of view of the device in degrees, default: 45.0 degrees.
 - `range`: Maximum range of the device in meters, default: 50.0 meters.
 
-The `leddar` node will output to the following ROS topics:
+The `leddar` node will output to the following ROS topic:
 - `~scan`: `LaserScan` message. Scan data.
 
 Configuring
