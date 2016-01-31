@@ -60,3 +60,6 @@ rosrun rqt_reconfigure rqt_reconfigure
 Visualizing
 -----------
 The scan data can be conveniently visualized with `rviz`.
+
+You should be able to see something like this:
+![rviz](https://cloud.githubusercontent.com/assets/723610/12699528/8cbbe460-c78c-11e5-801d-e6c24fc7da47.png)
