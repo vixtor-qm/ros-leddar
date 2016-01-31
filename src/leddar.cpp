@@ -132,20 +132,20 @@ int main(int argc, char** argv) {
     handler = LeddarCreate();
 
     // Get Leddar specifications.
-    if (!nh.hasParam("max_range")) {
-        ROS_FATAL("~max_range parameter not set");
+    if (!nh.hasParam("range")) {
+        ROS_FATAL("~range parameter not set");
         return -2;
     }
-    if (!nh.hasParam("field_of_view")) {
-        ROS_FATAL("~field_of_view parameter not set");
+    if (!nh.hasParam("fov")) {
+        ROS_FATAL("~fov parameter not set");
         return -3;
     }
     if (!nh.hasParam("frame")) {
         ROS_FATAL("~frame parameter not set");
         return -4;
     }
-    nh.getParam("max_range", max_range);
-    nh.getParam("field_of_view", field_of_view);
+    nh.getParam("range", max_range);
+    nh.getParam("fov", field_of_view);
     nh.getParam("frame", frame);
 
     // Get serial port and connect to Leddar.
