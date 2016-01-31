@@ -5,6 +5,9 @@ This ROS package configures and communicates with LeddarTech devices using
 their SDK. **This has only been tested on ROS Indigo and Jade with their
 Sensor Evaluation Kit.**
 
+This package was originally based on the work here: [jpmerc/leddartech]
+(https://github.com/jpmerc/leddartech).
+
 Setting up
 ----------
 You must clone this repository as `leddar` into your catkin workspace:
@@ -18,7 +21,7 @@ Udev rules
 To set up udev rules for your device, simply run:
 
 ```bash
-sudo useradd -G plugdev $USER
+sudo useradd -G plugdev ${USER}
 sudo cp 10-leddartech-rules /etc/udev/rules.d/
 sudo udevadm trigger
 ```
