@@ -42,7 +42,7 @@ from the root of your workspace.
 
 Running
 -------
-To run, simply connect the Tritech Micron sonar over RS232 and launch the
+To run, simply connect the LeddarTech leddar over RS232 and launch the
 package with:
 
 ```bash
