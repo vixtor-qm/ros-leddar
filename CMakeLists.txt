@@ -13,10 +13,8 @@ generate_dynamic_reconfigure_options(cfg/Scan.cfg)
 catkin_package()
 
 include_directories(include)
-
-link_directories(${PROJECT_SOURCE_DIR}/lib)
+link_directories(${PROJECT_SOURCE_DIR}/lib /home/vagrant/Qt/5.5/gcc_64/lib)
 
 add_executable(leddar src/leddar.cpp)
 add_dependencies(leddar ${PROJECT_NAME}_gencfg)
-target_link_libraries(leddar ${catkin_LIBRARIES} LeddarTech Leddar LeddarC)
-
+target_link_libraries(leddar ${catkin_LIBRARIES} LeddarTech Leddar LeddarC Qt5Core Qt5SerialPort)

@@ -24,7 +24,7 @@ static double field_of_view;
 ros::Publisher pub;
 
 
-static unsigned char leddar_callback(void *handler, unsigned int levels) {
+static void leddar_callback(void *handler) {
     LdDetection detections[BEAM_COUNT];
     unsigned int i, j, count = LeddarGetDetectionCount(handler);
     if (count > BEAM_COUNT) {
@@ -53,7 +53,6 @@ static unsigned char leddar_callback(void *handler, unsigned int levels) {
 
     // Publish and keep going.
     pub.publish(msg);
-    return 1;
 }
 
 
@@ -61,13 +60,13 @@ void configure_callback(leddar::ScanConfig &config, uint32_t level) {
     ROS_INFO("Reconfiguring...");
 
     // Set relative intensity of LEDs.
-    ROS_DEBUG("INTENSITY: %d", config.intensity);
-    LeddarSetProperty(handler, PID_LED_INTENSITY, 0, config.intensity);
-    
+    // ROS_DEBUG("INTENSITY: %d", config.intensity);
+    // LeddarSetProperty(handler, PID_LED_INTENSITY, 0, config.intensity);
+
     // Set automatic LED intensity.
-    ROS_DEBUG("AUTO INTENSITY: %s", config.auto_intensity ? "true" : "false");
-    LeddarSetProperty(handler, PID_AUTOMATIC_LED_INTENSITY, 0,
-                      config.auto_intensity);
+    // ROS_DEBUG("AUTO INTENSITY: %s", config.auto_intensity ? "true" : "false");
+    // LeddarSetProperty(handler, PID_AUTOMATIC_LED_INTENSITY, 0,
+    //                   config.auto_intensity);
 
     // Set number of accumulations to perform.
     ROS_DEBUG("ACCUMULATIONS: %d", config.accumulations);
@@ -90,9 +89,9 @@ void configure_callback(leddar::ScanConfig &config, uint32_t level) {
                       config.threshold_offset);
 
     // Set detection of 2 objects close to each other.
-    ROS_DEBUG("DEMERGING: %s", config.object_demerging ? "true" : "false");
-    LeddarSetProperty(handler, PID_OBJECT_DEMERGING, 0,
-                      config.object_demerging);
+    // ROS_DEBUG("DEMERGING: %s", config.object_demerging ? "true" : "false");
+    // LeddarSetProperty(handler, PID_OBJECT_DEMERGING, 0,
+    //                   config.object_demerging);
 }
 
 
@@ -100,13 +99,13 @@ static void stream(LeddarHandle handler) {
     // Start data transfer and set up callback.
     ROS_INFO("Streaming...");
     LeddarStartDataTransfer(handler, LDDL_DETECTIONS);
-    LeddarAddCallback(handler, leddar_callback, handler);
+    LeddarSetCallback(handler, leddar_callback, handler);
 }
 
 
-static void connect(LeddarHandle handler, const char* serial) {
-    int code = LeddarConnect(handler, serial);
-    
+static void connect(LeddarHandle handler, char* serial) {
+    int code = LeddarConnect(handler, "USB", serial);
+
     // Use default device` if unspecified.
     if (serial[0] == '\0') {
         serial = "default";
@@ -151,8 +150,14 @@ int main(int argc, char** argv) {
     // Get serial port and connect to Leddar.
     std::string serial;
     nh.getParam("serial", serial);
-    connect(handler, serial.c_str());
-    if (!LeddarGetConnected(handler)) {
+
+    char serial_copy[32];
+    strncpy(serial_copy, serial.c_str(), sizeof(serial_copy));
+    serial_copy[sizeof(serial_copy) - 1] = 0;
+
+    connect(handler, serial_copy);
+    if (LeddarGetConnected(handler) != LD_SUCCESS) {
+        ROS_FATAL("LeddarGetConnected Failed");
         LeddarDestroy(handler);
         return -1;
     }
