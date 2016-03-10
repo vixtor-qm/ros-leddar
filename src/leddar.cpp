@@ -63,7 +63,7 @@ void configure_callback(leddar::ScanConfig &config, uint32_t level) {
     // Set relative intensity of LEDs.
     ROS_DEBUG("INTENSITY: %d", config.intensity);
     LeddarSetProperty(handler, PID_LED_INTENSITY, 0, config.intensity);
-    
+
     // Set automatic LED intensity.
     ROS_DEBUG("AUTO INTENSITY: %s", config.auto_intensity ? "true" : "false");
     LeddarSetProperty(handler, PID_AUTOMATIC_LED_INTENSITY, 0,
@@ -93,6 +93,8 @@ void configure_callback(leddar::ScanConfig &config, uint32_t level) {
     ROS_DEBUG("DEMERGING: %s", config.object_demerging ? "true" : "false");
     LeddarSetProperty(handler, PID_OBJECT_DEMERGING, 0,
                       config.object_demerging);
+
+    LeddarWriteConfiguration(handler);
 }
 
 
@@ -106,7 +108,7 @@ static void stream(LeddarHandle handler) {
 
 static void connect(LeddarHandle handler, const char* serial) {
     int code = LeddarConnect(handler, serial);
-    
+
     // Use default device` if unspecified.
     if (serial[0] == '\0') {
         serial = "default";
