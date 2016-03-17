@@ -26,7 +26,7 @@ ros::Publisher pub;
 
 static void leddar_callback(void *handler) {
     LdDetection detections[BEAM_COUNT];
-    unsigned int i, j, count = LeddarGetDetectionCount(handler);
+    unsigned int i, count = LeddarGetDetectionCount(handler);
     if (count > BEAM_COUNT) {
         count = BEAM_COUNT;
     }
@@ -106,12 +106,19 @@ static void stream(LeddarHandle handler) {
 
 
 static void connect(LeddarHandle handler, char* serial) {
-    int code = LeddarConnect(handler, "USB", serial);
-
-    // Use default device` if unspecified.
+    // Use first device if unspecified.
     if (serial[0] == '\0') {
-        serial = "default";
+        char addresses[256] = "USB";
+        LeddarU32 size = 255;
+        LeddarListSensors(addresses, &size);
+        if (size > 0) {
+          serial = addresses;
+        } else {
+          serial = "default";
+        }
     }
+
+    int code = LeddarConnect(handler, "USB", serial);
 
     if (code == LD_SUCCESS) {
         ROS_INFO("Connected to %s", serial);
