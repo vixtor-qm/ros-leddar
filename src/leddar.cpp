@@ -15,6 +15,7 @@
 static LeddarHandle handler = NULL;
 
 // Leddar specifications.
+#define MAX_DETECTIONS_COUNT 50
 #define BEAM_COUNT 16
 static std::string frame;
 static double max_range;
@@ -25,7 +26,7 @@ ros::Publisher pub;
 
 
 static void leddar_callback(void *handler) {
-    LdDetection detections[BEAM_COUNT];
+    LdDetection detections[MAX_DETECTIONS_COUNT];
     unsigned int i, count = LeddarGetDetectionCount(handler);
     if (count > BEAM_COUNT) {
         count = BEAM_COUNT;
